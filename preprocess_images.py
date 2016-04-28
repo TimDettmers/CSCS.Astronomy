@@ -12,6 +12,9 @@ X1 = load_hdf5_matrix(path + 'out.hdf5')
 X2 = load_hdf5_matrix(path + 'noise.hdf5')
 
 data = [X1, X2]
+for i in range(10):
+    print np.min(X1[i])
+    print np.max(X1[i])
 
 bin_n = 16 # Number of bins
 def hog(img):
@@ -35,10 +38,11 @@ for X in data:
             if i > 0: 
                 print i
                 
-        #img_adapteq = exposure.equalize_adapthist(img, clip_limit=0.03)
-        #X[i] = img_adapteq
+        img_adapteq = np.abs(img)
+        img_adapteq = exposure.equalize_adapthist(np.log(img_adapteq + 1.0), clip_limit=0.5,kernel_size=(4,4))
+        X[i] = img_adapteq
         
-        
+        '''
         hog_features.append(hog(img)[:64])
         img -=  np.min(img)
         img /= np.max(img)
@@ -46,14 +50,15 @@ for X in data:
         img = cv2.fastNlMeansDenoising(img)
         X[i] = img
         hog_features_processed.append(hog(img)[:64])
+        '''
         
         #img = restoration.denoise_tv_chambolle(img, weight=0.01)
         #X[i] = img
     
-save_hdf5_matrix(path + 'hog_processed.hdf5', np.array(hog_features_processed, dtype=np.float32))
-save_hdf5_matrix(path + 'hog.hdf5',np.array(hog_features, dtype=np.float32))
+#save_hdf5_matrix(path + 'hog_processed.hdf5', np.array(hog_features_processed, dtype=np.float32))
+#save_hdf5_matrix(path + 'hog.hdf5',np.array(hog_features, dtype=np.float32))
         
-print 'HOG features saved!'
+#print 'HOG features saved!'
         
 save_hdf5_matrix(path + 'out_processed.hdf5', X1)
 save_hdf5_matrix(path + 'noise_processed.hdf5', X2)

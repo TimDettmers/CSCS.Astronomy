@@ -62,8 +62,14 @@ X2 = X2 / np.max(X2,0)
 
 path = '/home/tim/data/astro/'
 
-X1 = load_hdf5_matrix(path + 'out_processed_adahisto.hdf5')
-X2 = load_hdf5_matrix(path + 'noise_processed_adahisto.hdf5')
+X1 = load_hdf5_matrix(path + 'out_processed.hdf5')
+X2 = load_hdf5_matrix(path + 'noise_processed.hdf5')
+
+X1[np.isnan(X1)] = 0.0
+X2[np.isnan(X2)] = 0.0
+
+print np.sum(np.isnan(X1))
+print np.sum(np.isnan(X2))
 #X1 = load_hdf5_matrix(path + 'out.hdf5')
 #X2 = load_hdf5_matrix(path + 'noise.hdf5')
 
@@ -88,9 +94,9 @@ y = y[idx]
 
 gc.collect()
 
-X = max_norm_whole_dataset(X)
 #X = std_norm_per_image_dataset(X)
 
 save_hdf5_matrix(path + 'X_processed.hdf5', np.float32(X))
 save_hdf5_matrix(path + 'y_processed.hdf5', np.float32(y))
+save_hdf5_matrix(path + 'idx.hdf5', idx)
 

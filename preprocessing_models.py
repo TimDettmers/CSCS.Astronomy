@@ -5,6 +5,7 @@ from util import *
 from skimage import exposure
 from skimage import restoration
 from scipy.ndimage import median_filter
+import Image
 
 SZ=20
 bin_n = 16 # Number of bins
@@ -25,18 +26,27 @@ def hog(img):
 path = '/home/tim/data/astro/'
 
 X1 = load_hdf5_matrix(path + 'out.hdf5')
-X2 = load_hdf5_matrix(path + 'noise.hdf5')
+#X2 = load_hdf5_matrix(path + 'noise.hdf5')
 X3 = load_hdf5_matrix(path + 'clean.hdf5')
 
 for i in range(0,50000,1000):
     
-
+    img3 = Image.open("/home/tim/sift_keypoints.jpg")
     img = X1[i]
+    real = X3[i]
     
-    p2, p98 = np.percentile(img, (2, 98))
-    img_rescale = exposure.rescale_intensity(img, in_range=(p2, p98))
-    img_eq = exposure.equalize_hist(img)
-    img_adapteq = exposure.equalize_adapthist(img, clip_limit=0.03)
+    log_img = np.log(np.abs(img) + 1.0)
+    
+    p2, p98 = np.percentile(log_img, (2, 98))
+    img_rescale = exposure.rescale_intensity(log_img, in_range=(p2, p98))
+    img_eq = exposure.equalize_hist(log_img)
+    img_adapteq = exposure.equalize_adapthist(img, clip_limit=0.5,kernel_size=(4,4))
+    
+    #img_adapteq3 = img - np.min(img)
+    img_adapteq3 = exposure.equalize_adapthist(log_img, clip_limit=0.5,kernel_size=(4,4))
+    img_adapteq4 = exposure.equalize_adapthist(log_img, clip_limit=0.01,kernel_size=(2,2),nbins=12)
+    
+    
     
     #denois_img = img - np.min(img)
     denois_img = img_adapteq - np.min(img_adapteq)
@@ -44,7 +54,7 @@ for i in range(0,50000,1000):
     denois_img = np.uint8(denois_img*255)
     
     
-    tv_coins = restoration.denoise_tv_chambolle(img, weight=0.01)
+    tv_coins = restoration.richardson_lucy(log_img,)
     better_contrast = exposure.rescale_intensity(denois_img)
     dst = cv2.fastNlMeansDenoising(better_contrast)
     dst2 = cv2.fastNlMeansDenoising(denois_img)
@@ -57,9 +67,9 @@ for i in range(0,50000,1000):
     
     #print des.shape    
     
-    plt.subplot(131),plt.imshow(img)
-    plt.subplot(132),plt.imshow( dst)
-    plt.subplot(133),plt.imshow( dst2)
+    plt.subplot(131),plt.imshow(real)
+    plt.subplot(132),plt.imshow(tv_coins )
+    plt.subplot(133),plt.imshow( img_adapteq4)
     plt.show()
 
 
