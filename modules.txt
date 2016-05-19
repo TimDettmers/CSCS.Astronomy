@@ -1,0 +1,167 @@
+
+---------------------------- /cm/local/modulefiles -----------------------------
+cluster-tools/7.2         ipmitool/1.8.15           openldap
+cmd                       module-git                openmpi/mlnx/gcc/64/1.8.8
+dot                       module-info               shared
+freeipmi/1.4.11           mvapich2/mlnx/gcc/64/2.1  use.own
+gcc/5.2.0                 null                      version
+
+---------------------------- /cm/shared/modulefiles ----------------------------
+acml/gcc/64/5.3.1                    globalarrays/openmpi/open64/64/5.4
+acml/gcc/fma4/5.3.1                  hdf5/1.6.10
+acml/gcc/mp/64/5.3.1                 hdf5_18/1.8.16
+acml/gcc/mp/fma4/5.3.1               hpl/2.1
+acml/gcc-int64/64/5.3.1              hwloc/1.10.1
+acml/gcc-int64/fma4/5.3.1            intel-cluster-checker/2.2.2
+acml/gcc-int64/mp/64/5.3.1           intel-cluster-runtime/ia32/3.8
+acml/gcc-int64/mp/fma4/5.3.1         intel-cluster-runtime/intel64/3.8
+acml/open64/64/5.3.1                 intel-cluster-runtime/mic/3.8
+acml/open64/fma4/5.3.1               intel-tbb-oss/ia32/44_20151010oss
+acml/open64/mp/64/5.3.1              intel-tbb-oss/intel64/44_20151010oss
+acml/open64/mp/fma4/5.3.1            iozone/3_434
+acml/open64-int64/64/5.3.1           lapack/gcc/64/3.6.0
+acml/open64-int64/fma4/5.3.1         lapack/open64/64/3.6.0
+acml/open64-int64/mp/64/5.3.1        mpich/ge/gcc/64/3.2
+acml/open64-int64/mp/fma4/5.3.1      mpich/ge/open64/64/3.2
+blacs/openmpi/gcc/64/1.1patch03      mpiexec/0.84_432
+blacs/openmpi/open64/64/1.1patch03   mvapich/gcc/64/1.2rc1
+blas/gcc/64/3.6.0                    mvapich/open64/64/1.2rc1
+blas/open64/64/3.6.0                 mvapich2/gcc/64/2.2b
+bonnie++/1.97.1                      mvapich2/open64/64/2.2b
+cmgui/7.2                            netcdf/gcc/64/4.3.3.1
+cuda70/blas/7.0.28                   netcdf/open64/64/4.3.3.1
+cuda70/fft/7.0.28                    netperf/2.7.0
+cuda70/gdk/346.46                    open64/4.5.2.1
+cuda70/nsight/7.0.28                 openblas/dynamic/0.2.15
+cuda70/profiler/7.0.28               openlava/3.1
+cuda70/toolkit/7.0.28                openmpi/cuda/64/1.10.1
+cuda80/8.0.21                        openmpi/gcc/64/1.10.1
+default-environment                  openmpi/open64/64/1.10.1
+fftw2/openmpi/gcc/64/double/2.1.5    pbspro/13.0.2.153173
+fftw2/openmpi/gcc/64/float/2.1.5     pgi/64/16.3
+fftw2/openmpi/open64/64/double/2.1.5 puppet/3.8.4
+fftw2/openmpi/open64/64/float/2.1.5  scalapack/openmpi/gcc/64/2.0.2
+fftw3/openmpi/gcc/64/3.3.4           sge/2011.11p1
+fftw3/openmpi/open64/64/3.3.4        slurm/15.08.6
+gdb/7.9                              torque/6.0.0.1
+globalarrays/openmpi/gcc/64/5.4
+
+-------------------- /cm/shared/apps/easybuild/modules/all ---------------------
+Autoconf/2.69-foss-2016a
+Autoconf/2.69-GCC-4.9.3-2.25
+Autoconf/2.69-GNU-4.9.3-2.25
+Automake/1.15-foss-2016a
+Automake/1.15-GCC-4.9.3-2.25
+Automake/1.15-GNU-4.9.3-2.25
+Autotools/20150215-foss-2016a
+Autotools/20150215-GCC-4.9.3-2.25
+Autotools/20150215-GNU-4.9.3-2.25
+binutils/2.25
+binutils/2.25-GCC-4.9.3-binutils-2.25
+binutils/2.25-GCCcore-4.9.3
+Bison/2.7-GCC-4.8.4
+Bison/3.0.4
+Bison/3.0.4-GCC-4.9.3-binutils-2.25
+Bison/3.0.4-GCCcore-4.9.3
+Boost/1.59.0-intel-2015b
+bzip2/1.0.6-foss-2016a
+bzip2/1.0.6-GCC-4.9.3-2.25
+bzip2/1.0.6-intel-2015b
+Clang/3.7.1-GCC-4.9.3-2.25
+CMake/2.8.12-GCC-4.8.2
+CMake/3.0.0-GCC-4.8.3
+CMake/3.4.1-GCCcore-4.9.3
+ctags/5.8
+CUDA/7.5.18
+cURL/7.46.0
+EasyBuild/2.7.0
+expat/2.1.0
+FFTW/3.3.4-gompi-2016a
+flex/2.5.39
+flex/2.5.39-GCC-4.9.3-binutils-2.25
+flex/2.5.39-GCCcore-4.9.3
+foss/2016a
+GCC/4.8.2
+GCC/4.8.3
+GCC/4.8.4
+GCC/4.9.2
+GCC/4.9.3-2.25
+GCC/4.9.3-binutils-2.25
+GCC/5.3.0
+GCCcore/4.9.3
+git/2.7.3
+GMP/6.1.0-foss-2016a
+GMP/6.1.0-GCC-4.9.3-2.25
+GNU/4.9.3-2.25
+gompi/2016a
+hello/1.0-PGI-16.3-GCC-4.9.3-2.25
+HPL/2.1-intel-2015b
+hwloc/1.11.0-GNU-4.9.3-2.25
+hwloc/1.11.1-iccifort-2015.3.187-GNU-4.9.3-2.25
+hwloc/1.11.2-GCC-4.9.3-2.25
+icc/2015.3.187
+icc/2015.3.187-GNU-4.9.3-2.25
+iccifort/2015.3.187
+iccifort/2015.3.187-GNU-4.9.3-2.25
+ifort/2015.3.187
+ifort/2015.3.187-GNU-4.9.3-2.25
+iimpi/7.3.5-GNU-4.9.3-2.25
+imkl/11.2.3.187-iimpi-7.3.5-GNU-4.9.3-2.25
+imkl/11.2.3.187-iompi-2015.03
+impi/5.0.3.048-iccifort-2015.3.187
+impi/5.0.3.048-iccifort-2015.3.187-GNU-4.9.3-2.25
+intel/2015b
+iomkl/2015.03
+iompi/2015.03
+ISL/0.15-GCC-4.9.3-2.25
+Java/1.8.0_74
+libreadline/6.3-foss-2016a
+libreadline/6.3-GCCcore-4.9.3
+libreadline/6.3-intel-2015b
+libtool/2.4.6-foss-2016a
+libtool/2.4.6-GCC-4.9.3-2.25
+libtool/2.4.6-GNU-4.9.3-2.25
+libxml2/2.9.2-GCC-4.9.3-2.25
+M4/1.4.17
+M4/1.4.17-foss-2016a
+M4/1.4.17-GCC-4.8.4
+M4/1.4.17-GCC-4.9.3-2.25
+M4/1.4.17-GCC-4.9.3-binutils-2.25
+M4/1.4.17-GCCcore-4.9.3
+M4/1.4.17-GNU-4.9.3-2.25
+MVAPICH2/2.0.1-GCC-4.8.4
+ncurses/5.9-GCC-4.8.2
+ncurses/5.9-GCC-4.8.3
+ncurses/5.9-intel-2015b
+ncurses/6.0-foss-2016a
+ncurses/6.0-GCCcore-4.9.3
+numactl/2.0.10-GNU-4.9.3-2.25
+numactl/2.0.10-iccifort-2015.3.187-GNU-4.9.3-2.25
+numactl/2.0.11-GCC-4.9.3-2.25
+numactl/2.0.11-GCCcore-4.9.3
+OpenBLAS/0.2.15-GCC-4.9.3-2.25-LAPACK-3.6.0
+OpenMPI/1.10.2-GCC-4.9.3-2.25
+OpenMPI/1.8.8-GNU-4.9.3-2.25
+OpenMPI/1.8.8-iccifort-2015.3.187-GNU-4.9.3-2.25
+PGI/16.3-GCC-4.9.3-2.25
+pip/7.1.2-intel-2015b-Python-2.7.10
+Python/2.7.10-GCC-4.9.3-2.25-bare
+Python/2.7.10-intel-2015b
+Python/3.5.1-foss-2016a
+ScaLAPACK/2.0.2-gompi-2016a-OpenBLAS-0.2.15-LAPACK-3.6.0
+SQLite/3.8.10.2-GCC-4.9.3-2.25
+SQLite/3.8.10.2-intel-2015b
+SQLite/3.9.2-foss-2016a
+Szip/2.1-PGI-16.3-GCC-4.9.3-2.25
+Tcl/8.6.4-foss-2016a
+Tcl/8.6.4-GCC-4.9.3-2.25
+Tcl/8.6.4-intel-2015b
+Tk/8.6.4-foss-2016a-no-X11
+Tk/8.6.4-GCC-4.9.3-2.25-no-X11
+Tk/8.6.4-intel-2015b-no-X11
+zlib/1.2.8
+zlib/1.2.8-foss-2016a
+zlib/1.2.8-GCC-4.9.3-2.25
+zlib/1.2.8-GCC-4.9.3-binutils-2.25
+zlib/1.2.8-GCCcore-4.9.3
+zlib/1.2.8-intel-2015b

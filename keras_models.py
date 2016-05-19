@@ -22,7 +22,7 @@ def max_norm_whole_dataset(X):
 
 batch_size = 128
 nb_classes = 2
-nb_epoch = 100
+nb_epoch = 1
 
 # input image dimensions
 img_rows, img_cols = 100, 100
@@ -36,28 +36,33 @@ nb_conv = 3
 # the data, shuffled and split between train and test sets
 
 print('loading data...')
-path = '/home/tim/data/astro/'
-#X = load_hdf5_matrix(path + 'X_processed.hdf5')
-#y = load_hdf5_matrix(path + 'y_processed.hdf5')
-out = load_hdf5_matrix(path + 'out.hdf5')
-noise = load_hdf5_matrix(path + 'noise.hdf5')
+path = '/users/dettmers/data/'
+X = load_hdf5_matrix(path + 'X_weak_processed.hdf5')
+y = load_hdf5_matrix(path + 'y_weak_processed.hdf5')
+print(y)
+#out = load_hdf5_matrix(path + 'out_strong.hdf5')
+#noise = load_hdf5_matrix(path + 'noise.hdf5')[:out.shape[0]]
+
+X = X.reshape(X.shape[0],1,100,100)
+'''
 X = np.vstack([out, noise])
 print(X.shape)
-X = X.reshape(X.shape[0],1,100,100)
 
 y1 = np.ones((out.shape[0],1))
 y2 = np.zeros((noise.shape[0],1))
 y = np.vstack([y1,y2])
 
+'''
+'''
+X = X.reshape(X.shape[0],1,100,100)
 
 idx_X = np.arange(X.shape[0])
-rdm = np.random.RandomState(234)
-
 rdm.shuffle(idx_X)
 X = X[idx_X]
 y = y[idx_X]
+'''
+rdm = np.random.RandomState(234)
 print(y)
-
 idx = load_hdf5_matrix(path + 'idx.hdf5')
 print('data loaded!')
 
@@ -132,9 +137,11 @@ Y_cv = to_categorical(y_cv, nb_classes)
 Y_test = to_categorical(y_test, nb_classes)
 gc.collect()
 
-X_train = X_train[idx_train]
-Y_train = Y_train[idx_train]
 '''
+idx_train = np.arange(X_train.shape[0])
+rdm.shuffle(idx_train)
+X_train = X_train[idx_train]
+y_train = y_train[idx_train]
 
 print('normalizing...')
 X_train = max_norm_whole_dataset(X_train)
@@ -144,7 +151,6 @@ gc.collect()
 
 
 
-idx_train = np.arange(X_train.shape[0])
 
 
 
@@ -188,12 +194,12 @@ model.add(Activation('softmax'))
 learning_rate = 0.0001
 print(learning_rate)
 print("with batch normalization")
-opt = Adam(lr=learning_rate, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
-#opt = RMSprop(lr=learning_rate)
-model.compile(loss='categorical_crossentropy', optimizer=opt)
+#opt = Adam(lr=learning_rate, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
+opt = RMSprop(lr=learning_rate)
+model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
 
 model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
-          show_accuracy=True, verbose=1, validation_data=(X_cv, Y_cv))
+          verbose=1, validation_data=(X_cv, Y_cv))
 score = model.evaluate(X_test, Y_test, show_accuracy=True, verbose=0)
 pred = model.predict(X_test, verbose=1)
 
@@ -201,6 +207,7 @@ pred = model.predict(X_test, verbose=1)
 errors = np.equal(y_test, np.argmax(pred,axis=1).reshape(-1,1))==0
 idx_test = idx[-testn:]
 save_hdf5_matrix(path + "error_idx.hdf5", errors)
+save_hdf5_matrix(path + "error_softmax.hdf5", pred)
 #np.equal(y_test,)
 
 

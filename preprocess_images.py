@@ -6,15 +6,14 @@ from skimage import exposure
 from skimage import restoration
 
 
-path = '/home/tim/data/astro/'
+path = '/users/dettmers/data/'
 
-X1 = load_hdf5_matrix(path + 'out.hdf5')
-X2 = load_hdf5_matrix(path + 'noise.hdf5')
+#X1 = load_hdf5_matrix(path + 'out_strong.hdf5')
+#X2 = load_hdf5_matrix(path + 'noise.hdf5')
+X3 = load_hdf5_matrix(path + 'out_weak.hdf5')
 
-data = [X1, X2]
-for i in range(10):
-    print np.min(X1[i])
-    print np.max(X1[i])
+#data = [X1, X2, X3]
+data = [X3]
 
 bin_n = 16 # Number of bins
 def hog(img):
@@ -60,8 +59,9 @@ for X in data:
         
 #print 'HOG features saved!'
         
-save_hdf5_matrix(path + 'out_processed.hdf5', X1)
-save_hdf5_matrix(path + 'noise_processed.hdf5', X2)
+#save_hdf5_matrix(path + 'out_strong_processed.hdf5', X1)
+#save_hdf5_matrix(path + 'noise_processed.hdf5', X2)
+save_hdf5_matrix(path + 'out_weak_processed.hdf5', X3)
 
 
 

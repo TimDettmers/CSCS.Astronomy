@@ -1,8 +1,9 @@
 import numpy as np
 from util import *
-import Image
 from os.path import join
 import os
+import cPickle as pickle
+from PIL import Image
 
 
 
@@ -13,10 +14,19 @@ import os
  #2=wrongly identified as not containing a filament; 
  #3=wrongly identified as containing a filament
  
-path = '/home/tim/data/astro/'
+path = '/users/dettmers/data/'
 X = load_hdf5_matrix(path + 'X_processed.hdf5')
 idx = load_hdf5_matrix(path + 'idx.hdf5')
+P = pickle.load(open(join(path,'P_weak.p')))
 error_idx = load_hdf5_matrix(path + 'error_idx.hdf5')
+pred  = load_hdf5_matrix(path + 'error_softmax.hdf5')
+
+if not os.path.exists(path.replace('/data','/results')):
+	os.mkdir(path.replace('/data','/results'))
+	os.mkdir(join(path.replace('/data','/results'),'out'))
+	os.mkdir(join(path.replace('/data','/results'),'out','noise'))
+	os.mkdir(join(path.replace('/data','/results'),'out_weak'))
+	os.mkdir(join(path.replace('/data','/results'),'out_strong'))
 
 test = 0.2
 cv = 0.1
@@ -28,58 +38,32 @@ cvn = int(cv*n)
 trainn = int(train*n)
 
 print X.shape
-idx_test = idx[-testn:]
+idx_test = P[-testn:]
 X_test = X[-testn:]
 print error_idx.shape
 
+
 img = []
 quadrant = {}
-for i, (idx_img, error) in enumerate(zip(idx_test, error_idx)):
-    #0-50000 out
-    #50000-100000 noise
-    #-> repeat
-    if not (idx_img > 0 and idx_img < 50000 or 
-       idx_img > 200000 and idx_img < 250000): continue
-    isFilament =  idx_img < 200000
-    if isFilament:
-        file_path = 'out/{0}.jpg'.format(idx_img%50000)
-        
-        if error == 0:
-            quadrant[idx_img%50000] = 1
-        else:
-            quadrant[idx_img%50000] = 2
-    else:
-        file_path = 'out/noise/{0}.jpg'.format(idx_img%50000)
-        if error == 0:
-            quadrant[idx_img%50000] = 0
-        else:
-            quadrant[idx_img%50000] = 3
-    print idx_img, isFilament, idx_img%50000, file_path
-    arr = X_test[i].reshape(100,100)
-    im = Image.fromarray(np.uint8(arr*255))
-    
-    folder = os.path.dirname(join(path,file_path))
-    if not os.path.exists(folder):
-        os.mkdir(folder)
-        
-    im.save(join(path, file_path))
-
-for imgno in quadrant:
-    cls = quadrant[imgno]
-    if cls == 3 or cls == 1:
-        img.append(['out/noise/{0}.jpg'.format(imgno),cls])
-    else:
-        img.append(['out/{0}.jpg'.format(imgno),cls])
-        
-                   
-
-        
-        
 with open(path + 'test_data.txt','wb') as f:
-    for value in img:
+	for i, (img_path, error) in enumerate(zip(idx_test, error_idx)):
+	    #0-50000 out
+	    #50000-100000 noise
+	    #-> repeat
+	    isFilament =  'noise' not in img_path[0]
+	    if isFilament:
+		if error == 0:
+        	    f.write("{0}, {1}, {2}, {3}\n".format(img_path[0].replace('fits','jpg'),1,pred[i,0],pred[i,1]))
+		else:
+        	    f.write("{0}, {1}, {2}, {3}\n".format(img_path[0].replace('fits','jpg'),2,pred[i,0],pred[i,1]))
+	    else:
+		if error == 0:
+        	    f.write("{0}, {1}, {2}, {3}\n".format(img_path[0].replace('fits','jpg'),0,pred[i,0],pred[i,1]))
+		else:
+        	    f.write("{0}, {1}, {2}, {3}\n".format(img_path[0].replace('fits','jpg'),3,pred[i,0],pred[i,1]))
 
-        
-        f.write("{0}, {1}\n".format(value[0],value[1]))
-    
+	    arr = X_test[i].reshape(100,100)
+	    im = Image.fromarray(np.uint8(arr*255))
+		
+	    im.save(join(path, img_path[0].replace('/data','/results').replace('fits','jpg')))
 
-print len(quadrant.keys())
