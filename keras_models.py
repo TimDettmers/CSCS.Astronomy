@@ -20,6 +20,9 @@ def max_norm_whole_dataset(X):
     print(np.max(X,0))
     return X
 
+#batch size is often something between 32 to 512
+#for most problems a batch size of 128 is good
+#your algorithm is faster if you choose a multiple of 32 for the batch_size
 batch_size = 128
 nb_classes = 2
 nb_epoch = 1
@@ -108,6 +111,8 @@ testn = int(test*n)
 cvn = int(cv*n)
 trainn = int(train*n)
 
+
+#split the data into training, cross validation and test sets
 X_train = np.copy(X[:trainn])
 y_train = np.copy(y[:trainn])
 
@@ -143,6 +148,7 @@ rdm.shuffle(idx_train)
 X_train = X_train[idx_train]
 y_train = y_train[idx_train]
 
+#normalize data sets
 print('normalizing...')
 X_train = max_norm_whole_dataset(X_train)
 X_cv = max_norm_whole_dataset(X_cv)
@@ -165,24 +171,35 @@ print(X_train.dtype)
 print(X_train.shape)
 model = Sequential()
 
+#dropout as the first step removes 20% of the input data
+#this has a similar effect as creating more data through rotations etc
+#this makes sure that every image that the models sees contains different information
 model.add(Dropout(0.2, input_shape=(1, img_rows, img_cols)))
+#the first convolutional filter often has a stride to reduce memory consumption (not set here)
 model.add(Convolution2D(nb_filters, nb_conv, nb_conv,
                         border_mode='valid',
                         input_shape=(1, img_rows, img_cols)))
+#batch normalization usually improves generalization performance and increases the walltime to "convergence"
 #model.add(BatchNormalization(axis=1))
-model.add(Activation('relu'))
+model.add(Activation('relu')) #relu = rectified linear unit; very popular activation function and will work well in most cases
 model.add(Convolution2D(nb_filters, nb_conv, nb_conv))
 #model.add(BatchNormalization(axis=1))
 model.add(Activation('relu'))
 model.add(Convolution2D(nb_filters, nb_conv, nb_conv))
 #model.add(BatchNormalization(axis=1))
 model.add(Activation('relu'))
+#max pooling gives some rotational, translational invariance for the convolutional filters
+#also very useful to reduce memory consumption
+#but can throw away a lot of information so one should be careful not to overuse it
 model.add(MaxPooling2D(pool_size=(nb_pool, nb_pool)))
 
+# change from convolutional layout to dense layout: From (batch_size, channels (like color), row pixels, column pixels) 
+# to (batch_size, feature size) which is needed for dense or fully connect networks 
+#(note that other libraries may use different convolution layouts)
 model.add(Flatten())
 model.add(Dense(1024))
 #model.add(BatchNormalization(mode=1))
-model.add(Dropout(0.5))
+model.add(Dropout(0.5)) #fully connect layers have about 90% of the parameters in the network, use dropout to regularize the network
 model.add(Activation('relu'))
 model.add(Dense(1024))
 #model.add(BatchNormalization(mode=1))
@@ -194,8 +211,12 @@ model.add(Activation('softmax'))
 learning_rate = 0.0001
 print(learning_rate)
 print("with batch normalization")
+
+#optimization algorithms: Both Adam and RMSprop usually work very well and speed up convergence dramatically
 #opt = Adam(lr=learning_rate, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
 opt = RMSprop(lr=learning_rate)
+
+# the loss or cost function denotes what we optimize (in this case cross entropy loss which indirectly optimizes classification accuracy)
 model.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
 
 model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
